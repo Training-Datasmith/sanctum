@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Sanctum\Tests\Unit;
 
 use Laravel\Sanctum\TransientToken;
@@ -9,7 +11,7 @@ class TransientTokenTest extends TestCase
 {
     public function test_can_determine_what_it_can_and_cant_do()
     {
-        $token = new TransientToken;
+        $token = new TransientToken();
 
         $this->assertTrue($token->can('foo'));
         $this->assertTrue($token->can('bar'));

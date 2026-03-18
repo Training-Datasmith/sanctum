@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Sanctum\Tests\Feature;
 
 use Illuminate\Http\Request;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Orchestra\Testbench\Concerns\WithWorkbench;
-use Orchestra\Testbench\TestCase;
 
 use function Orchestra\Testbench\package_path;
+
+use Orchestra\Testbench\TestCase;
 
 class DefaultConfigContainsAppUrlTest extends TestCase
 {

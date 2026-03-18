@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Sanctum\Tests\Controller;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,7 +17,8 @@ use Workbench\Database\Factories\UserFactory;
 
 class AuthenticateRequestsTest extends TestCase
 {
-    use RefreshDatabase, WithWorkbench;
+    use RefreshDatabase;
+    use WithWorkbench;
 
     protected function defineEnvironment($app)
     {
@@ -49,7 +52,8 @@ class AuthenticateRequestsTest extends TestCase
     public function test_can_authorize_valid_user_using_authorization_header()
     {
         PersonalAccessTokenFactory::new()->for(
-            $user = UserFactory::new()->create(), 'tokenable'
+            $user = UserFactory::new()->create(),
+            'tokenable'
         )->create();
 
         $this->getJson('/sanctum/api/user', ['Authorization' => 'Bearer test'])
@@ -61,7 +65,8 @@ class AuthenticateRequestsTest extends TestCase
     public function test_can_authorize_valid_user_using_sanctum_acting_as($guard)
     {
         PersonalAccessTokenFactory::new()->for(
-            $user = UserFactory::new()->create(), 'tokenable'
+            $user = UserFactory::new()->create(),
+            'tokenable'
         )->create();
 
         Sanctum::actingAs($user, [], $guard);

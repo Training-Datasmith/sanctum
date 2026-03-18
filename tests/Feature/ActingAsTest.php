@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Sanctum\Tests\Feature;
 
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +32,7 @@ class ActingAsTest extends TestCase
             return 'bar';
         })->middleware('auth:sanctum');
 
-        Sanctum::actingAs($user = new User);
+        Sanctum::actingAs($user = new User());
         $user->id = 1;
 
         $response = $this->get('/foo');
@@ -113,7 +115,7 @@ class ActingAsTest extends TestCase
             return response(403);
         })->middleware('auth:sanctum');
 
-        $user = new User;
+        $user = new User();
         $user->id = 1;
 
         Sanctum::actingAs($user, ['baz']);
@@ -138,7 +140,7 @@ class ActingAsTest extends TestCase
             return response(403);
         })->middleware('auth:sanctum');
 
-        $user = new User;
+        $user = new User();
         $user->id = 1;
 
         Sanctum::actingAs($user, ['*']);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Sanctum;
 
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
@@ -31,7 +33,7 @@ class Guard
         foreach (Arr::wrap(config('sanctum.guard', 'web')) as $guard) {
             if ($user = $this->auth->guard($guard)->user()) {
                 return $this->supportsTokens($user)
-                    ? $user->withAccessToken(new TransientToken)
+                    ? $user->withAccessToken(new TransientToken())
                     : $user;
             }
         }
@@ -94,7 +96,7 @@ class Guard
     protected function isValidBearerToken(?string $token = null): bool
     {
         if (! is_null($token) && str_contains($token, '|')) {
-            $model = new Sanctum::$personalAccessTokenModel;
+            $model = new Sanctum::$personalAccessTokenModel();
 
             if ($model->getKeyType() === 'int') {
                 [$id, $token] = explode('|', $token, 2);

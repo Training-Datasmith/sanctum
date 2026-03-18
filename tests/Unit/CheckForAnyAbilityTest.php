@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Sanctum\Tests\Unit;
 
 use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
@@ -17,7 +19,7 @@ class CheckForAnyAbilityTest extends TestCase
 
     public function test_request_is_passed_along_if_abilities_are_present_on_token()
     {
-        $middleware = new CheckForAnyAbility;
+        $middleware = new CheckForAnyAbility();
         $request = Mockery::mock();
         $request->shouldReceive('user')->andReturn($user = Mockery::mock());
         $user->shouldReceive('currentAccessToken')->andReturn($token = Mockery::mock());
@@ -35,7 +37,7 @@ class CheckForAnyAbilityTest extends TestCase
     {
         $this->expectException('Laravel\Sanctum\Exceptions\MissingAbilityException');
 
-        $middleware = new CheckForAnyAbility;
+        $middleware = new CheckForAnyAbility();
         $request = Mockery::mock();
         $request->shouldReceive('user')->andReturn($user = Mockery::mock());
         $user->shouldReceive('currentAccessToken')->andReturn($token = Mockery::mock());
@@ -51,7 +53,7 @@ class CheckForAnyAbilityTest extends TestCase
     {
         $this->expectException('Illuminate\Auth\AuthenticationException');
 
-        $middleware = new CheckForAnyAbility;
+        $middleware = new CheckForAnyAbility();
         $request = Mockery::mock();
         $request->shouldReceive('user')->once()->andReturn(null);
 
@@ -64,7 +66,7 @@ class CheckForAnyAbilityTest extends TestCase
     {
         $this->expectException('Illuminate\Auth\AuthenticationException');
 
-        $middleware = new CheckForAnyAbility;
+        $middleware = new CheckForAnyAbility();
         $request = Mockery::mock();
         $request->shouldReceive('user')->andReturn($user = Mockery::mock());
         $user->shouldReceive('currentAccessToken')->andReturn(null);

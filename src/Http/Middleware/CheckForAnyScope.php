@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Sanctum\Http\Middleware;
 
 use Laravel\Sanctum\Exceptions\MissingScopeException;

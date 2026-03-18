@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Sanctum\Tests\Feature;
 
 use DateTimeInterface;
@@ -23,7 +25,8 @@ use Workbench\Database\Factories\UserFactory;
 
 class GuardTest extends TestCase
 {
-    use RefreshDatabase, WithWorkbench;
+    use RefreshDatabase;
+    use WithWorkbench;
 
     protected function defineEnvironment($app)
     {
@@ -46,7 +49,7 @@ class GuardTest extends TestCase
                 ->with('web')
                 ->andReturn($webGuard);
 
-        $webGuard->shouldReceive('user')->once()->andReturn($fakeUser = new User);
+        $webGuard->shouldReceive('user')->once()->andReturn($fakeUser = new User());
 
         $user = $guard->__invoke(Request::create('/', 'GET'));
 
@@ -94,7 +97,8 @@ class GuardTest extends TestCase
         $request->headers->set('Authorization', 'Bearer test');
 
         PersonalAccessTokenFactory::new()->for(
-            $user = UserFactory::new()->create(), 'tokenable'
+            $user = UserFactory::new()->create(),
+            'tokenable'
         )->create([
             'name' => 'Test',
             'created_at' => now()->subMinutes(60),
@@ -123,7 +127,8 @@ class GuardTest extends TestCase
         $request->headers->set('Authorization', 'Bearer test');
 
         PersonalAccessTokenFactory::new()->for(
-            $user = UserFactory::new()->create(), 'tokenable'
+            $user = UserFactory::new()->create(),
+            'tokenable'
         )->create([
             'name' => 'Test',
             'expires_at' => now()->subMinutes(60),
@@ -152,7 +157,8 @@ class GuardTest extends TestCase
         $request->headers->set('Authorization', 'Bearer test');
 
         $token = PersonalAccessTokenFactory::new()->for(
-            $user = UserFactory::new()->create(), 'tokenable'
+            $user = UserFactory::new()->create(),
+            'tokenable'
         )->create([
             'name' => 'Test',
             'expires_at' => now()->addMinutes(60),
@@ -183,7 +189,8 @@ class GuardTest extends TestCase
         $request->headers->set('Authorization', 'Bearer test');
 
         $token = PersonalAccessTokenFactory::new()->for(
-            $user = UserFactory::new()->create(), 'tokenable'
+            $user = UserFactory::new()->create(),
+            'tokenable'
         )->create([
             'name' => 'Test',
         ]);
@@ -210,7 +217,8 @@ class GuardTest extends TestCase
         $request->headers->set('Authorization', 'Bearer test');
 
         PersonalAccessTokenFactory::new()->for(
-            UserFactory::new(), 'tokenable'
+            UserFactory::new(),
+            'tokenable'
         )->create([
             'name' => 'Test',
         ]);
@@ -240,7 +248,8 @@ class GuardTest extends TestCase
         $request = Request::create('/', 'GET');
 
         PersonalAccessTokenFactory::new()->for(
-            UserFactory::new(), 'tokenable'
+            UserFactory::new(),
+            'tokenable'
         )->create([
             'name' => 'Test',
             'expires_at' => now()->subMinutes(60),
@@ -264,7 +273,8 @@ class GuardTest extends TestCase
         $request->headers->set('Authorization', 'Bearer test');
 
         PersonalAccessTokenFactory::new()->for(
-            $user = UserFactory::new()->create(), 'tokenable'
+            $user = UserFactory::new()->create(),
+            'tokenable'
         )->create([
             'name' => 'Test',
         ]);
@@ -285,7 +295,8 @@ class GuardTest extends TestCase
         $request->headers->set('Authorization', 'Bearer test');
 
         PersonalAccessTokenFactory::new()->for(
-            $user = UserFactory::new()->create(), 'tokenable'
+            $user = UserFactory::new()->create(),
+            'tokenable'
         )->create([
             'name' => 'Test',
         ]);
@@ -321,7 +332,8 @@ class GuardTest extends TestCase
         $request->headers->set('X-Auth-Token', 'test');
 
         $token = PersonalAccessTokenFactory::new()->for(
-            $user = UserFactory::new()->create(), 'tokenable'
+            $user = UserFactory::new()->create(),
+            'tokenable'
         )->create([
             'name' => 'Test',
         ]);
@@ -357,7 +369,8 @@ class GuardTest extends TestCase
         $request->headers->set('Authorization', 'Bearer test');
 
         PersonalAccessTokenFactory::new()->for(
-            UserFactory::new(), 'tokenable'
+            UserFactory::new(),
+            'tokenable'
         )->create([
             'name' => 'Test',
         ]);
@@ -391,7 +404,8 @@ class GuardTest extends TestCase
         $request->headers->set('X-Auth-Token', 'test');
 
         PersonalAccessTokenFactory::new()->for(
-            UserFactory::new(), 'tokenable'
+            UserFactory::new(),
+            'tokenable'
         )->create([
             'name' => 'Test',
         ]);
@@ -437,7 +451,8 @@ class GuardTest extends TestCase
         $request->headers->set('Authorization', 'Bearer test');
 
         $token = PersonalAccessTokenFactory::new()->for(
-            $user = UserFactory::new()->create(), 'tokenable'
+            $user = UserFactory::new()->create(),
+            'tokenable'
         )->create([
             'name' => 'Test',
             'last_used_at' => null,
@@ -468,7 +483,8 @@ class GuardTest extends TestCase
         $request->headers->set('Authorization', 'Bearer test');
 
         $token = PersonalAccessTokenFactory::new()->for(
-            $user = UserFactory::new()->create(), 'tokenable'
+            $user = UserFactory::new()->create(),
+            'tokenable'
         )->create([
             'name' => 'Test',
         ]);

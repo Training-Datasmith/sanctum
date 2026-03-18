@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Sanctum\Tests\Unit;
 
 use Laravel\Sanctum\PersonalAccessToken;
@@ -9,7 +11,7 @@ class PersonalAccessTokenTest extends TestCase
 {
     public function test_can_determine_what_it_can_and_cant_do()
     {
-        $token = new PersonalAccessToken;
+        $token = new PersonalAccessToken();
 
         $token->abilities = [];
 

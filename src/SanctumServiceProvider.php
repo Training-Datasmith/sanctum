@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Sanctum;
 
 use Illuminate\Auth\RequestGuard;
@@ -83,7 +85,7 @@ class SanctumServiceProvider extends ServiceProvider
         Auth::resolved(function ($auth): void {
             $requestGuardCreator = fn ($config) => $this->createGuard($auth, $config);
 
-            $auth->extend('sanctum', fn($app, $name, array $config) => tap($requestGuardCreator($config), function ($guard): void {
+            $auth->extend('sanctum', fn ($app, $name, array $config) => tap($requestGuardCreator($config), function ($guard): void {
                 app()->refresh('request', $guard, 'setRequest');
             }));
         });

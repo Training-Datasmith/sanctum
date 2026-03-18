@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Sanctum\Http\Middleware;
 
 use Illuminate\Auth\AuthenticationException;
@@ -20,7 +22,7 @@ class CheckAbilities
     public function handle($request, $next, ...$abilities)
     {
         if (! $request->user() || ! $request->user()->currentAccessToken()) {
-            throw new AuthenticationException;
+            throw new AuthenticationException();
         }
 
         foreach ($abilities as $ability) {

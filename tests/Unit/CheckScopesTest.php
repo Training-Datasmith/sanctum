@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Sanctum\Tests\Unit;
 
 use Laravel\Sanctum\Http\Middleware\CheckScopes;
@@ -17,7 +19,7 @@ class CheckScopesTest extends TestCase
 
     public function test_request_is_passed_along_if_scopes_are_present_on_token()
     {
-        $middleware = new CheckScopes;
+        $middleware = new CheckScopes();
         $request = Mockery::mock();
         $request->shouldReceive('user')->andReturn($user = Mockery::mock());
         $user->shouldReceive('currentAccessToken')->andReturn($token = Mockery::mock());
@@ -35,7 +37,7 @@ class CheckScopesTest extends TestCase
     {
         $this->expectException('Laravel\Sanctum\Exceptions\MissingScopeException');
 
-        $middleware = new CheckScopes;
+        $middleware = new CheckScopes();
         $request = Mockery::mock();
         $request->shouldReceive('user')->andReturn($user = Mockery::mock());
         $user->shouldReceive('currentAccessToken')->andReturn($token = Mockery::mock());
@@ -50,7 +52,7 @@ class CheckScopesTest extends TestCase
     {
         $this->expectException('Illuminate\Auth\AuthenticationException');
 
-        $middleware = new CheckScopes;
+        $middleware = new CheckScopes();
         $request = Mockery::mock();
         $request->shouldReceive('user')->once()->andReturn(null);
 
@@ -63,7 +65,7 @@ class CheckScopesTest extends TestCase
     {
         $this->expectException('Illuminate\Auth\AuthenticationException');
 
-        $middleware = new CheckScopes;
+        $middleware = new CheckScopes();
         $request = Mockery::mock();
         $request->shouldReceive('user')->andReturn($user = Mockery::mock());
         $user->shouldReceive('currentAccessToken')->andReturn(null);

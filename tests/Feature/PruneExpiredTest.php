@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Sanctum\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -10,7 +12,8 @@ use Workbench\Database\Factories\UserFactory;
 
 class PruneExpiredTest extends TestCase
 {
-    use RefreshDatabase, WithWorkbench;
+    use RefreshDatabase;
+    use WithWorkbench;
 
     protected function defineEnvironment($app)
     {
@@ -24,7 +27,8 @@ class PruneExpiredTest extends TestCase
         $user = UserFactory::new()->create();
 
         $token_1 = PersonalAccessTokenFactory::new()->for(
-            $user, 'tokenable'
+            $user,
+            'tokenable'
         )->create([
             'name' => 'Test_1',
             'token' => hash('sha256', 'test_1'),
@@ -32,7 +36,8 @@ class PruneExpiredTest extends TestCase
         ]);
 
         $token_2 = PersonalAccessTokenFactory::new()->for(
-            $user, 'tokenable'
+            $user,
+            'tokenable'
         )->create([
             'name' => 'Test_2',
             'token' => hash('sha256', 'test_2'),
@@ -40,7 +45,8 @@ class PruneExpiredTest extends TestCase
         ]);
 
         $token_3 = PersonalAccessTokenFactory::new()->for(
-            $user, 'tokenable'
+            $user,
+            'tokenable'
         )->create([
             'name' => 'Test_3',
             'token' => hash('sha256', 'test_3'),
@@ -60,7 +66,8 @@ class PruneExpiredTest extends TestCase
         config(['sanctum.expiration' => null]);
 
         $token = PersonalAccessTokenFactory::new()->for(
-            UserFactory::new(), 'tokenable'
+            UserFactory::new(),
+            'tokenable'
         )->create([
             'name' => 'Test',
             'token' => hash('sha256', 'test'),
@@ -80,7 +87,8 @@ class PruneExpiredTest extends TestCase
         $user = UserFactory::new()->create();
 
         $token_1 = PersonalAccessTokenFactory::new()->for(
-            $user, 'tokenable'
+            $user,
+            'tokenable'
         )->create([
             'name' => 'Test_1',
             'token' => hash('sha256', 'test_1'),
@@ -88,7 +96,8 @@ class PruneExpiredTest extends TestCase
         ]);
 
         $token_2 = PersonalAccessTokenFactory::new()->for(
-            $user, 'tokenable'
+            $user,
+            'tokenable'
         )->create([
             'name' => 'Test_2',
             'token' => hash('sha256', 'test_2'),
@@ -96,7 +105,8 @@ class PruneExpiredTest extends TestCase
         ]);
 
         $token_3 = PersonalAccessTokenFactory::new()->for(
-            $user, 'tokenable'
+            $user,
+            'tokenable'
         )->create([
             'name' => 'Test_3',
             'token' => hash('sha256', 'test_3'),

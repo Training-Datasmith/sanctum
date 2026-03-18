@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laravel\Sanctum\Http\Middleware;
 
 use Illuminate\Routing\Pipeline;
@@ -22,7 +24,7 @@ class EnsureFrontendRequestsAreStateful
 
         return (new Pipeline(app()))->send($request)->through(
             static::fromFrontend($request) ? $this->frontendMiddleware() : []
-        )->then(fn($request) => $next($request));
+        )->then(fn ($request) => $next($request));
     }
 
     /**
