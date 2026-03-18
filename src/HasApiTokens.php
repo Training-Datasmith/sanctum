@@ -29,41 +29,30 @@ trait HasApiTokens
 
     /**
      * Determine if the current API token has a given scope.
-     *
-     * @param  string  $ability
-     * @return bool
      */
-    public function tokenCan(string $ability)
+    public function tokenCan(string $ability): bool
     {
         return $this->accessToken && $this->accessToken->can($ability);
     }
 
     /**
      * Determine if the current API token does not have a given scope.
-     *
-     * @param  string  $ability
-     * @return bool
      */
-    public function tokenCant(string $ability)
+    public function tokenCant(string $ability): bool
     {
         return ! $this->tokenCan($ability);
     }
 
     /**
      * Create a new personal access token for the user.
-     *
-     * @param  string  $name
-     * @param  array  $abilities
-     * @param  \DateTimeInterface|null  $expiresAt
-     * @return \Laravel\Sanctum\NewAccessToken
      */
-    public function createToken(string $name, array $abilities = ['*'], ?DateTimeInterface $expiresAt = null)
+    public function createToken(string $name, array $abilities = ['*'], ?DateTimeInterface $expiresAt = null): \Laravel\Sanctum\NewAccessToken
     {
         $plainTextToken = $this->generateTokenString();
 
         $token = $this->tokens()->create([
             'name' => $name,
-            'token' => hash('sha256', $plainTextToken),
+            'token' => hash('sha256', (string) $plainTextToken),
             'abilities' => $abilities,
             'expires_at' => $expiresAt,
         ]);
@@ -73,10 +62,8 @@ trait HasApiTokens
 
     /**
      * Generate the token string.
-     *
-     * @return string
      */
-    public function generateTokenString()
+    public function generateTokenString(): string
     {
         return sprintf(
             '%s%s%s',

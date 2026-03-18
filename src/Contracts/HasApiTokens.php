@@ -16,7 +16,6 @@ interface HasApiTokens
     /**
      * Determine if the current API token has a given scope.
      *
-     * @param  string  $ability
      * @return bool
      */
     public function tokenCan(string $ability);
@@ -24,9 +23,6 @@ interface HasApiTokens
     /**
      * Create a new personal access token for the user.
      *
-     * @param  string  $name
-     * @param  array  $abilities
-     * @param  \DateTimeInterface|null  $expiresAt
      * @return \Laravel\Sanctum\NewAccessToken
      */
     public function createToken(string $name, array $abilities = ['*'], ?DateTimeInterface $expiresAt = null);

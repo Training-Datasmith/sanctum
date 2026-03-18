@@ -24,7 +24,6 @@ class Guard
     /**
      * Retrieve the authenticated user for the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function __invoke(Request $request)
@@ -65,19 +64,17 @@ class Guard
      * Determine if the tokenable model supports API tokens.
      *
      * @param  mixed  $tokenable
-     * @return bool
      */
-    protected function supportsTokens($tokenable = null)
+    protected function supportsTokens($tokenable = null): bool
     {
         return $tokenable && in_array(HasApiTokens::class, class_uses_recursive(
-            get_class($tokenable)
+            $tokenable::class
         ));
     }
 
     /**
      * Get the token from the request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return string|null
      */
     protected function getTokenFromRequest(Request $request)
@@ -93,11 +90,8 @@ class Guard
 
     /**
      * Determine if the bearer token is in the correct format.
-     *
-     * @param  string|null  $token
-     * @return bool
      */
-    protected function isValidBearerToken(?string $token = null)
+    protected function isValidBearerToken(?string $token = null): bool
     {
         if (! is_null($token) && str_contains($token, '|')) {
             $model = new Sanctum::$personalAccessTokenModel;
@@ -116,7 +110,6 @@ class Guard
      * Determine if the provided access token is valid.
      *
      * @param  mixed  $accessToken
-     * @return bool
      */
     protected function isValidAccessToken($accessToken): bool
     {
@@ -130,7 +123,7 @@ class Guard
             && $this->hasValidProvider($accessToken->tokenable);
 
         if (is_callable(Sanctum::$accessTokenAuthenticationCallback)) {
-            $isValid = (bool) (Sanctum::$accessTokenAuthenticationCallback)($accessToken, $isValid);
+            return (bool) (Sanctum::$accessTokenAuthenticationCallback)($accessToken, $isValid);
         }
 
         return $isValid;

@@ -22,9 +22,7 @@ class EnsureFrontendRequestsAreStateful
 
         return (new Pipeline(app()))->send($request)->through(
             static::fromFrontend($request) ? $this->frontendMiddleware() : []
-        )->then(function ($request) use ($next) {
-            return $next($request);
-        });
+        )->then(fn($request) => $next($request));
     }
 
     /**
@@ -42,10 +40,8 @@ class EnsureFrontendRequestsAreStateful
 
     /**
      * Get the middleware that should be applied to requests from the "frontend".
-     *
-     * @return array
      */
-    protected function frontendMiddleware()
+    protected function frontendMiddleware(): array
     {
         $middleware = array_values(array_filter(array_unique([
             config('sanctum.middleware.encrypt_cookies', \Illuminate\Cookie\Middleware\EncryptCookies::class),
@@ -84,7 +80,7 @@ class EnsureFrontendRequestsAreStateful
 
         $stateful = array_filter(config('sanctum.stateful', []));
 
-        return Str::is(Collection::make($stateful)->map(function ($uri) use ($request) {
+        return Str::is(Collection::make($stateful)->map(function ($uri) use ($request): string {
             $uri = $uri === Sanctum::$currentRequestHostPlaceholder ? $request->getHttpHost() : $uri;
 
             return trim($uri).'/*';

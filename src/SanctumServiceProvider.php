@@ -15,10 +15,8 @@ class SanctumServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         config([
             'auth.guards.sanctum' => array_merge([
@@ -34,10 +32,8 @@ class SanctumServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         if (app()->runningInConsole()) {
             $this->publishesMigrations([
@@ -69,7 +65,7 @@ class SanctumServiceProvider extends ServiceProvider
             return;
         }
 
-        Route::group(['prefix' => config('sanctum.prefix', 'sanctum')], function () {
+        Route::group(['prefix' => config('sanctum.prefix', 'sanctum')], function (): void {
             Route::get(
                 '/csrf-cookie',
                 CsrfCookieController::class.'@show'
@@ -84,14 +80,12 @@ class SanctumServiceProvider extends ServiceProvider
      */
     protected function configureGuard()
     {
-        Auth::resolved(function ($auth) {
+        Auth::resolved(function ($auth): void {
             $requestGuardCreator = fn ($config) => $this->createGuard($auth, $config);
 
-            $auth->extend('sanctum', function ($app, $name, array $config) use ($requestGuardCreator) {
-                return tap($requestGuardCreator($config), function ($guard) {
-                    app()->refresh('request', $guard, 'setRequest');
-                });
-            });
+            $auth->extend('sanctum', fn($app, $name, array $config) => tap($requestGuardCreator($config), function ($guard): void {
+                app()->refresh('request', $guard, 'setRequest');
+            }));
         });
     }
 

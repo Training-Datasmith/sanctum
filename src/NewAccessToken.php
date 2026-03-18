@@ -22,7 +22,7 @@ class NewAccessToken implements Arrayable, Jsonable
      *
      * @return array<string, string>
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'accessToken' => $this->accessToken,

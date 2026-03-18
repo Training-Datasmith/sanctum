@@ -36,13 +36,13 @@ class AuthenticateSession
         }
 
         $guards = Collection::make(Arr::wrap(config('sanctum.guard')))
-            ->mapWithKeys(fn ($guard) => [$guard => $this->auth->guard($guard)])
-            ->filter(fn ($guard) => $guard instanceof SessionGuard);
+            ->mapWithKeys(fn ($guard): array => [$guard => $this->auth->guard($guard)])
+            ->filter(fn ($guard): bool => $guard instanceof SessionGuard);
 
         $shouldLogout = $guards->filter(
             fn ($guard, $driver) => $request->session()->has('password_hash_'.$driver)
         )->filter(
-            fn ($guard, $driver) => ! $this->validatePasswordHash(
+            fn (\Illuminate\Auth\SessionGuard $guard, $driver): bool => ! $this->validatePasswordHash(
                 $guard,
                 $request->user()->getAuthPassword(),
                 $request->session()->get('password_hash_'.$driver)
@@ -57,7 +57,7 @@ class AuthenticateSession
             throw new AuthenticationException('Unauthenticated.', [...$shouldLogout->keys()->all(), 'sanctum']);
         }
 
-        return tap($next($request), function () use ($request, $guards) {
+        return tap($next($request), function () use ($request, $guards): void {
             if (! is_null($guard = $this->getFirstGuardWithUser($guards->keys()))) {
                 $this->storePasswordHashInSession($request, $guard);
             }
@@ -67,12 +67,11 @@ class AuthenticateSession
     /**
      * Get the first authentication guard that has a user.
      *
-     * @param  \Illuminate\Support\Collection  $guards
      * @return string|null
      */
     protected function getFirstGuardWithUser(Collection $guards)
     {
-        return $guards->first(function ($guard) {
+        return $guards->first(function ($guard): bool {
             $guardInstance = $this->auth->guard($guard);
 
             return method_exists($guardInstance, 'hasUser') &&
@@ -84,7 +83,6 @@ class AuthenticateSession
      * Store the user's current password hash in the session.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string  $guard
      * @return void
      */
     protected function storePasswordHashInSession($request, string $guard)
@@ -100,19 +98,16 @@ class AuthenticateSession
 
     /**
      * Validate the password hash against the stored value.
-     *
-     * @param  \Illuminate\Auth\SessionGuard  $guard
-     * @param  string|null  $passwordHash
-     * @param  string  $storedValue
-     * @return bool
      */
     protected function validatePasswordHash(SessionGuard $guard, ?string $passwordHash, string $storedValue): bool
     {
         // Try new HMAC format first (Laravel 12.45.0+)...
-        if (method_exists($guard, 'hashPasswordForCookie')) {
-            if (hash_equals($guard->hashPasswordForCookie($passwordHash), $storedValue)) {
-                return true;
-            }
+        if (!method_exists($guard, 'hashPasswordForCookie')) {
+            // Fall back to raw password hash format for backward compatibility...
+            return hash_equals($passwordHash ?? '', $storedValue);
+        }
+        if (hash_equals($guard->hashPasswordForCookie($passwordHash), $storedValue)) {
+            return true;
         }
 
         // Fall back to raw password hash format for backward compatibility...
