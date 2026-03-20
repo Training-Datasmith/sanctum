@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laravel\Sanctum\Exceptions;
 
-use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\Access\Authorization_Exception;
 use Illuminate\Support\Arr;
-
-class MissingAbilityException extends AuthorizationException
+class Missing_Ability_Exception extends Authorization_Exception
 {
     /**
      * Create a new missing scope exception.
@@ -18,10 +16,8 @@ class MissingAbilityException extends AuthorizationException
     public function __construct(protected $abilities = [], $message = 'Invalid ability provided.')
     {
         parent::__construct($message);
-
         $this->abilities = Arr::wrap($abilities);
     }
-
     /**
      * Get the abilities that the user did not have.
      *

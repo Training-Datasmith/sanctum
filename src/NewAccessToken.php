@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laravel\Sanctum;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
-
-class NewAccessToken implements Arrayable, Jsonable
+class New_Access_Token implements Arrayable, Jsonable
 {
     /**
      * Create a new access token result.
@@ -15,31 +13,26 @@ class NewAccessToken implements Arrayable, Jsonable
      * @param  \Laravel\Sanctum\PersonalAccessToken  $accessToken  The access token instance.
      * @param  string  $plainTextToken  The plain text version of the token.
      */
-    public function __construct(public PersonalAccessToken $accessToken, public string $plainTextToken)
+    public function __construct(public Personal_Access_Token $access_token, public string $plain_text_token)
     {
     }
-
     /**
      * Get the instance as an array.
      *
      * @return array<string, string>
      */
-    public function toArray(): array
+    public function to_array(): array
     {
-        return [
-            'accessToken' => $this->accessToken,
-            'plainTextToken' => $this->plainTextToken,
-        ];
+        return ['accessToken' => $this->access_token, 'plainTextToken' => $this->plain_text_token];
     }
-
     /**
      * Convert the object to its JSON representation.
      *
      * @param  int  $options
      * @return string
      */
-    public function toJson($options = 0)
+    public function to_json($options = 0)
     {
-        return json_encode($this->toArray(), $options);
+        return json_encode($this->to_array(), $options);
     }
 }

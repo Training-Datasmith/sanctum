@@ -1,17 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laravel\Sanctum\Exceptions;
 
-use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\Access\Authorization_Exception;
 use Illuminate\Support\Arr;
-
 /**
  * @deprecated
  * @see \Laravel\Sanctum\Exceptions\MissingAbilityException
  */
-class MissingScopeException extends AuthorizationException
+class Missing_Scope_Exception extends Authorization_Exception
 {
     /**
      * Create a new missing scope exception.
@@ -22,10 +20,8 @@ class MissingScopeException extends AuthorizationException
     public function __construct(protected $scopes = [], $message = 'Invalid scope(s) provided.')
     {
         parent::__construct($message);
-
         $this->scopes = Arr::wrap($scopes);
     }
-
     /**
      * Get the scopes that the user did not have.
      *

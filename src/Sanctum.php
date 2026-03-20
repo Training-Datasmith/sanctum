@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laravel\Sanctum;
 
 use Mockery;
-
 /**
  * @template TToken of \Laravel\Sanctum\Contracts\HasAbilities = \Laravel\Sanctum\PersonalAccessToken
  */
@@ -16,47 +14,40 @@ class Sanctum
      *
      * @var class-string<TToken>
      */
-    public static $personalAccessTokenModel = \Laravel\Sanctum\PersonalAccessToken::class;
-
+    public static $personal_access_token_model = \Laravel\Sanctum\Personal_Access_Token::class;
     /**
      * A callback that can get the token from the request.
      *
      * @var callable|null
      */
-    public static $accessTokenRetrievalCallback;
-
+    public static $access_token_retrieval_callback;
     /**
      * A callback that can add to the validation of the access token.
      *
      * @var callable|null
      */
-    public static $accessTokenAuthenticationCallback;
-
+    public static $access_token_authentication_callback;
     /**
      * A placeholder to instruct Sanctum to include the current request host in the list of stateful domains.
      *
      * @var string;
      */
-    public static $currentRequestHostPlaceholder = '__SANCTUM_CURRENT_REQUEST_HOST__';
-
+    public static $current_request_host_placeholder = '__SANCTUM_CURRENT_REQUEST_HOST__';
     /**
      * Get the current application URL from the "APP_URL" environment variable - with port.
      */
-    public static function currentApplicationUrlWithPort(): string
+    public static function current_application_url_with_port(): string
     {
-        $appUrl = config('app.url');
-
-        return $appUrl ? ','.parse_url($appUrl, PHP_URL_HOST).(parse_url($appUrl, PHP_URL_PORT) ? ':'.parse_url($appUrl, PHP_URL_PORT) : '') : '';
+        $app_url = config('app.url');
+        return $app_url ? ',' . parse_url($app_url, PHP_URL_HOST) . (parse_url($app_url, PHP_URL_PORT) ? ':' . parse_url($app_url, PHP_URL_PORT) : '') : '';
     }
-
     /**
      * Get a fixed token instructing Sanctum to include the current request host in the list of stateful domains.
      */
-    public static function currentRequestHost(): string
+    public static function current_request_host(): string
     {
-        return ','.static::$currentRequestHostPlaceholder;
+        return ',' . static::$current_request_host_placeholder;
     }
-
     /**
      * Set the current user for the application with the given abilities.
      *
@@ -65,64 +56,54 @@ class Sanctum
      * @param  string  $guard
      * @return \Illuminate\Contracts\Auth\Authenticatable
      */
-    public static function actingAs($user, $abilities = [], $guard = 'sanctum')
+    public static function acting_as($user, $abilities = [], $guard = 'sanctum')
     {
-        $token = Mockery::mock(self::personalAccessTokenModel())->shouldIgnoreMissing(false);
-
+        $token = Mockery::mock(self::personal_access_token_model())->should_ignore_missing(false);
         if (in_array('*', $abilities)) {
-            $token->shouldReceive('can')->withAnyArgs()->andReturn(true);
+            $token->should_receive('can')->with_any_args()->and_return(true);
         } else {
             foreach ($abilities as $ability) {
-                $token->shouldReceive('can')->with($ability)->andReturn(true);
+                $token->should_receive('can')->with($ability)->and_return(true);
             }
         }
-
-        $user->withAccessToken($token);
-
-        if (isset($user->wasRecentlyCreated) && $user->wasRecentlyCreated) {
-            $user->wasRecentlyCreated = false;
+        $user->with_access_token($token);
+        if (isset($user->was_recently_created) && $user->was_recently_created) {
+            $user->was_recently_created = false;
         }
-
-        app('auth')->guard($guard)->setUser($user);
-
-        app('auth')->shouldUse($guard);
-
+        app('auth')->guard($guard)->set_user($user);
+        app('auth')->should_use($guard);
         return $user;
     }
-
     /**
      * Set the personal access token model name.
      *
      * @param  class-string<TToken>  $model
      */
-    public static function usePersonalAccessTokenModel($model): void
+    public static function use_personal_access_token_model($model): void
     {
-        static::$personalAccessTokenModel = $model;
+        static::$personal_access_token_model = $model;
     }
-
     /**
      * Specify a callback that should be used to fetch the access token from the request.
      */
-    public static function getAccessTokenFromRequestUsing(?callable $callback): void
+    public static function get_access_token_from_request_using(?callable $callback): void
     {
-        static::$accessTokenRetrievalCallback = $callback;
+        static::$access_token_retrieval_callback = $callback;
     }
-
     /**
      * Specify a callback that should be used to authenticate access tokens.
      */
-    public static function authenticateAccessTokensUsing(callable $callback): void
+    public static function authenticate_access_tokens_using(callable $callback): void
     {
-        static::$accessTokenAuthenticationCallback = $callback;
+        static::$access_token_authentication_callback = $callback;
     }
-
     /**
      * Get the token model class name.
      *
      * @return class-string<TToken>
      */
-    public static function personalAccessTokenModel()
+    public static function personal_access_token_model()
     {
-        return static::$personalAccessTokenModel;
+        return static::$personal_access_token_model;
     }
 }

@@ -1,10 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laravel\Sanctum\Events;
 
-class TokenAuthenticated
+class Token_Authenticated
 {
     /**
      * Create a new event instance.

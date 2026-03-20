@@ -1,10 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Laravel\Sanctum\Contracts;
 
-interface HasAbilities
+interface Has_Abilities
 {
     /**
      * Determine if the token has a given ability.
@@ -13,7 +12,6 @@ interface HasAbilities
      * @return bool
      */
     public function can($ability);
-
     /**
      * Determine if the token is missing a given ability.
      *
